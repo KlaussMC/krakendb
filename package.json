@@ -1,6 +1,6 @@
 {
   "name": "krakendb",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A simple database package for node",
   "main": "krakendb.js",
   "scripts": {
@@ -18,8 +18,5 @@
   "bugs": {
     "url": "https://github.com/KlaussMC/krakendb/issues"
   },
-  "homepage": "https://github.com/KlaussMC/krakendb#readme",
-  "dependencies": {
-    "console.table": "^0.10.0"
-  }
+  "homepage": "https://github.com/KlaussMC/krakendb#readme"
 }
