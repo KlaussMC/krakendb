@@ -1,7 +1,5 @@
 # krakendb
 
- - Help! The Readme file doesn't show up on NPMjs.com!!!
-
 The package contains a very basic method of managing what is essentially, a database.
 
 The package can create, read, write and delete content in a very basic manner.
