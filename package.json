@@ -1,0 +1,25 @@
+{
+  "name": "krakendb",
+  "version": "1.0.0",
+  "description": "A simple database package for node",
+  "main": "krakendb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KlaussMC/krakendb.git"
+  },
+  "keywords": [
+    "Database"
+  ],
+  "author": "Jacob Schneider",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KlaussMC/krakendb/issues"
+  },
+  "homepage": "https://github.com/KlaussMC/krakendb#readme",
+  "dependencies": {
+    "console.table": "^0.10.0"
+  }
+}
