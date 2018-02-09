@@ -114,7 +114,7 @@ let activeIndex = 0;
 module.exports.newdb = function (name, rows) {
     dbs.push(new db(name, rows));
 }
-module.exports.activeDB(name) {
+module.exports.activeDB = function(name) {
     let matches = 0;
     for (let i in dbs) {
         if (dbs[i].name == name) {
@@ -126,15 +126,15 @@ module.exports.activeDB(name) {
         console.log("The selected database does not exist")
     }
 }
-module.exports.newEntry(name) {
+module.exports.newEntry = function(name) {
     dbs[activeIndex].entry(name);
 }
-module.exports.setItem(item, row, val) {
+module.exports.setItem = function(item, row, val) {
     dbs[activeIndex].set(item, row, val);
 }
-module.exports.getItem(item, row) {
+module.exports.getItem = function(item, row) {
     dbs[activeIndex].get(item, row);
 }
-module.exports.delItem(item, row) {
+module.exports.delItem = function(item, row) {
     dbs[activeIndex].del(item, row);
 }
