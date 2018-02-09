@@ -138,11 +138,3 @@ module.exports.getItem(item, row) {
 module.exports.delItem(item, row) {
     dbs[activeIndex].del(item, row);
 }
-
-module.exports.newdb("Test", ["name", "username", "email", "password"]);
-dbs[0].entry("user");
-dbs[0].entry("user2");
-dbs[0].set("user2", 'username', "Hello");
-dbs[0].printDB();
-console.log('-------------------------------------------------------');
-console.log(dbs[0].get("user2"));
