@@ -1,5 +1,3 @@
-const cTable = require('console.table');
-
 class db {
     constructor (name, rows) {
         this.name = name;
