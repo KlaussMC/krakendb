@@ -1,16 +1,23 @@
+const fs = require("fs");
+const path = require("path");
+
 class db {
-    constructor (name, rows) {
-        this.name = name;
-        this.rows = rows;
+    constructor (name, rows, cont) {
+        if (name && rows) {
+            this.name = name;
+            this.rows = rows;
 
-        this.data = [['0']];
+            this.data = [['0']];
 
-        if (Number.isInteger(rows) || rows.constructor === Array) {
-            for (let i in rows) {
-                this.data[0].push(rows[i]);
+            if (Number.isInteger(rows) || rows.constructor === Array) {
+                for (let i in rows) {
+                    this.data[0].push(rows[i]);
+                }
+            } else {
+                console.log("The second argument must be an array of strings or an integer.");
             }
         } else {
-            console.log("The second argument must be an array of strings or an integer.");
+            this.data = cont;
         }
     }
     entry (item) {
@@ -137,4 +144,59 @@ module.exports.getItem = function(item, row) {
 }
 module.exports.delItem = function(item, row) {
     dbs[activeIndex].del(item, row);
+}
+module.exports.exportdb = function(db) {
+    if (!db) {
+        if (fs.existsSync(path.join(__dirname, "krakendb"))) {
+            fs.writeFileSync(path.join(path.join(__dirname, "krakendb"), dbs[activeIndex].name + ".json"), JSON.stringify(dbs[activeIndex]));
+        } else {
+            fs.mkdirSync(path.join(__dirname, 'krakendb'));
+            fs.writeFileSync(path.join(path.join(__dirname, "krakendb"), dbs[activeIndex].name + ".json"), JSON.stringify(dbs[activeIndex]));
+        }
+    } else {
+        let matches = 0;
+        for (let i in dbs) {
+            if (dbs[i].name == db) {
+                if (fs.existsSync(path.join(__dirname, "krakendb"))) {
+                    fs.writeFileSync(path.join(path.join(__dirname, "krakendb"), dbs[i].name + ".json"), JSON.stringify(dbs[i]));
+                } else {
+                    fs.mkdirSync(path.join(__dirname, 'krakendb'));
+                    fs.writeFileSync(path.join(path.join(__dirname, "krakendb"), dbs[i].name + ".json"), JSON.stringify(dbs[i]));
+                }
+                matches++;
+                break;
+            }
+        }
+        if (matches == 0) {
+            console.log("The selected database does not exist")
+        }
+    }
+}
+module.exports.loaddb = function(name) {
+    if (name) {
+        if (fs.existsSync(path.join(path.join(__dirname, "krakendb"), name + ".json"))) {
+            dbs.push(new db(null, null, JSON.parse(fs.readFileSync(path.join(path.join(__dirname, "krakendb"), name + ".json")))));
+        } else {
+            console.log("database doesn't exist");
+        }
+    } else {
+        console.log("Please specify a database name (without extension)");
+    }
+}
+module.exports.dbexists = function(name) {
+    if (name) {
+        if ( fs.existsSync(path.join(path.join(__dirname, "krakendb"), name + ".json")) ) {
+            return true;
+        } else {
+            let matches = 0;
+            for (i in dbs.length) {
+                if (dbs[i].name == name) {
+                    return true;
+                }
+            }
+            if (matches == 0) {
+                return false;
+            }
+        }
+    }
 }
