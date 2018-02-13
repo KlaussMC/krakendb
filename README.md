@@ -45,6 +45,7 @@ To retrieve an item:
 
  - If only one argument is provided, returns whole entry in Array form
  - if both, returns string with value of referenced value.
+ - Throws error if item doesn't exist to help with referencing.
 
 To delete an item:
 

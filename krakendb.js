@@ -14,7 +14,7 @@ class db {
                     this.data[0].push(rows[i]);
                 }
             } else {
-                console.log("The second argument must be an array of strings or an integer.");
+                throw("The second argument must be an array of strings or an integer.");
             }
         } else {
             this.data = cont;
@@ -42,7 +42,7 @@ class db {
                 }
 
                 if (matches2 == 0) {
-                    console.log("The selected row is not available")
+                    throw("The selected row is not available")
                 }
 
                 matches ++;
@@ -50,7 +50,7 @@ class db {
             }
         }
         if (matches == 0) {
-            console.log("The selected item is not available")
+            throw("The selected item is not available")
         }
     }
     get (item, row) {
@@ -70,7 +70,7 @@ class db {
                         }
                     }
                     if (matches2 == 0) {
-                        console.log("The selected row is not available")
+                        throw("The selected row is not available")
                     }
                 } else {
                     return this.data[i];
@@ -81,7 +81,7 @@ class db {
             }
         }
         if (matches == 0) {
-            console.log("The selected item is not available")
+            throw("The selected item is not available")
         }
     }
     del (item, row) {
@@ -101,7 +101,7 @@ class db {
                         }
                     }
                     if (matches2 == 0) {
-                        console.log("The selected row is not available")
+                        throw("The selected row is not available")
                     }
                 } else {
                     this.data.splice(i, 1);
@@ -112,7 +112,7 @@ class db {
             }
         }
         if (matches == 0) {
-            console.log("The selected item is not available")
+            throw("The selected item is not available")
         }
     }
 }
@@ -130,7 +130,7 @@ module.exports.activeDB = function(name) {
         }
     }
     if (matches == 0) {
-        console.log("The selected database does not exist")
+        throw("The selected database does not exist")
     }
 }
 module.exports.newEntry = function(name) {
@@ -168,7 +168,7 @@ module.exports.exportdb = function(db) {
             }
         }
         if (matches == 0) {
-            console.log("The selected database does not exist")
+            throw("The selected database does not exist")
         }
     }
 }
@@ -177,10 +177,10 @@ module.exports.loaddb = function(name) {
         if (fs.existsSync(path.join(path.join(__dirname, "krakendb"), name + ".json"))) {
             dbs.push(new db(null, null, JSON.parse(fs.readFileSync(path.join(path.join(__dirname, "krakendb"), name + ".json")))));
         } else {
-            console.log("database doesn't exist");
+            throw("database doesn't exist");
         }
     } else {
-        console.log("Please specify a database name (without extension)");
+        throw("Please specify a database name (without extension)");
     }
 }
 module.exports.dbexists = function(name) {
