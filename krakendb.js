@@ -49,45 +49,35 @@ class db {
             throw "The selected item is not available"
         }
     }
-    get (item, row) {
-        let matches = 0;
-        for (let i in this.data) {
-            if (this.data[i][0] == item) {
-
-                if (row != undefined) {
-                    let matches2 = 0;
-                    for (let j in this.data[0]) {
-                        if (this.data[0][j] == row) {
-
-                            return this.data[i][j];
-
-                            matches2 ++;
-                            break;
+    get (row, column) {
+        for(let i in this.data) {
+            if(this.data[i][0] == row) {
+                if (column) {
+                    var colIndex = null;
+                    for(let j in this.data[i]) {
+                        if(this.data[0][j] == column) {
+                            colIndex = j;
                         }
                     }
-                    if (matches2 == 0) {
-                        throw "The selected row is not available"
-                    }
+                    if(colIndex != null )
+                        return this.data[i][colIndex];
+                    else
+                        throw "row not found in database"
                 } else {
                     return this.data[i];
                 }
-
-                matches ++;
-                break;
             }
         }
-        if (matches == 0) {
-            throw "The selected item is not available"
-        }
+        return false;
     }
     del (item, row) {
         let matches = 0;
-        for (let i in this.data) {
+        for (let i =0; i < this.data.length; i++) {
             if (this.data[i][0] == item) {
 
                 if (row != undefined) {
                     let matches2 = 0;
-                    for (let j in this.data[0]) {
+                    for (let j = 0; j < this.data[0].length; j++) {
                         if (this.data[0][j] == row) {
 
                             this.data[i][j] = null;
@@ -112,7 +102,7 @@ class db {
         }
     }
 }
-let dbs = [];
+var dbs = [];
 let activeIndex = 0;
 module.exports.newdb = function (name, rows) {
     dbs.push(new db(name, rows));
@@ -136,7 +126,7 @@ module.exports.setItem = function(item, row, val) {
     dbs[activeIndex].set(item, row, val);
 }
 module.exports.getItem = function(item, row) {
-    dbs[activeIndex].get(item, row);
+    return dbs[0].get(item, row)
 }
 module.exports.delItem = function(item, row) {
     dbs[activeIndex].del(item, row);
