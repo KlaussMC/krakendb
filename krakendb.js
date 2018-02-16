@@ -3,21 +3,17 @@ const path = require("path");
 
 class db {
     constructor (name, rows, cont) {
-        if (name && rows) {
-            this.name = name;
-            this.rows = rows;
+        this.name = name;
+        this.rows = rows;
 
-            this.data = [['0']];
+        this.data = [['0']];
 
-            if (Number.isInteger(rows) || rows.constructor === Array) {
-                for (let i in rows) {
-                    this.data[0].push(rows[i]);
-                }
-            } else {
-                throw("The second argument must be an array of strings or an integer.");
+        if (Number.isInteger(rows) || rows.constructor === Array) {
+            for (let i in rows) {
+                this.data[0].push(rows[i]);
             }
         } else {
-            this.data = cont;
+            throw "The second argument must be an array of strings or an integer.";
         }
     }
     entry (item) {
@@ -27,11 +23,11 @@ class db {
     }
     set (item, row, val) {
         let matches = 0;
-        for (let i = 0; i < this.data.length; i++) {
+        for (let i in this.data) {
             if (this.data[i][0] == item) {
 
                 let matches2 = 0;
-                for (let j = 0; j < this.data[0].length; j++) {
+                for (let j in this.data[0]) {
                     if (this.data[0][j] == row) {
 
                         this.data[i][j] = val;
@@ -42,7 +38,7 @@ class db {
                 }
 
                 if (matches2 == 0) {
-                    throw("The selected row is not available")
+                    throw "The selected row is not available"
                 }
 
                 matches ++;
@@ -50,17 +46,17 @@ class db {
             }
         }
         if (matches == 0) {
-            throw("The selected item is not available")
+            throw "The selected item is not available"
         }
     }
     get (item, row) {
         let matches = 0;
-        for (let i = 0; i < this.data.length; i++) {
+        for (let i in this.data) {
             if (this.data[i][0] == item) {
 
                 if (row != undefined) {
                     let matches2 = 0;
-                    for (let j = 0; j < this.data[0].length; j++) {
+                    for (let j in this.data[0]) {
                         if (this.data[0][j] == row) {
 
                             return this.data[i][j];
@@ -70,7 +66,7 @@ class db {
                         }
                     }
                     if (matches2 == 0) {
-                        throw("The selected row is not available")
+                        throw "The selected row is not available"
                     }
                 } else {
                     return this.data[i];
@@ -81,17 +77,17 @@ class db {
             }
         }
         if (matches == 0) {
-            throw("The selected item is not available")
+            throw "The selected item is not available"
         }
     }
     del (item, row) {
         let matches = 0;
-        for (let i = 0; i < this.data.length; i++) {
+        for (let i in this.data) {
             if (this.data[i][0] == item) {
 
                 if (row != undefined) {
                     let matches2 = 0;
-                    for (let j = 0; j < this.data[0].length; j++) {
+                    for (let j in this.data[0]) {
                         if (this.data[0][j] == row) {
 
                             this.data[i][j] = null;
@@ -101,7 +97,7 @@ class db {
                         }
                     }
                     if (matches2 == 0) {
-                        throw("The selected row is not available")
+                        throw "The selected row is not available"
                     }
                 } else {
                     this.data.splice(i, 1);
@@ -112,7 +108,7 @@ class db {
             }
         }
         if (matches == 0) {
-            throw("The selected item is not available")
+            throw "The selected item is not available"
         }
     }
 }
@@ -130,7 +126,7 @@ module.exports.activeDB = function(name) {
         }
     }
     if (matches == 0) {
-        throw("The selected database does not exist")
+        throw "The selected database does not exist"
     }
 }
 module.exports.newEntry = function(name) {
@@ -168,19 +164,22 @@ module.exports.exportdb = function(db) {
             }
         }
         if (matches == 0) {
-            throw("The selected database does not exist")
+            throw "The selected database does not exist"
         }
     }
 }
 module.exports.loaddb = function(name) {
     if (name) {
         if (fs.existsSync(path.join(path.join(__dirname, "krakendb"), name + ".json"))) {
-            dbs.push(new db(null, null, JSON.parse(fs.readFileSync(path.join(path.join(__dirname, "krakendb"), name + ".json")))));
+            dbs.push(new db(name,
+                            JSON.parse(fs.readFileSync(path.join(path.join(__dirname, "krakendb"), name + ".json"))).rows,
+                            JSON.parse(fs.readFileSync(path.join(path.join(__dirname, "krakendb"), name + ".json"))).data
+            ));
         } else {
-            throw("database doesn't exist");
+            throw "database doesn't exist";
         }
     } else {
-        throw("Please specify a database name (without extension)");
+        throw "Please specify a database name (without extension)";
     }
 }
 module.exports.dbexists = function(name) {
@@ -199,4 +198,41 @@ module.exports.dbexists = function(name) {
             }
         }
     }
+}
+module.exports.isset = function (row, column) {
+    let db = dbs[activeIndex]
+    for(let i in db.data) {
+        if(db.data[i][0] == row) {
+            if (column) {
+                var colIndex = null;
+                for(let j in db.data[i]) {
+                    if(db.data[0][j] == column) {
+                        colIndex = j;
+                    }
+                }
+                if(colIndex != null )
+                    return db.data[i][colIndex] != null;
+                else
+                    throw "row not found in database"
+            } else {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+module.exports.indb = function (str) {
+    let db = dbs[activeIndex]
+    let matches = 0;
+    for (let i in db.data) {
+        for (let j in db.data[i]) {
+            if (db.data[i][j] == str) {
+                matches++
+            }
+        }
+    }
+    if (matches == 0)
+        return false
+    else
+        return true;
 }

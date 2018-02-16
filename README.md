@@ -83,4 +83,32 @@ To check if db exists:
 
  - takes one argument, db name. returns true if db exists either exported or unexported, false if otherwise.
 
+__New in version 1.3.0:__
+
+To check whether db contains item:
+
+    krakendb.indb()
+
+ - takes one argument. checks whether string occurs in db.
+
+To check whether a field is filled:
+
+    krakendb.isset()
+
+ - takes 2 arguments, item and row. returns true if item does not equal null, false if otherwise.
+ - argument 2 is optional.
+
+__Changes:__
+getItem
+
+    krakendb.getItem()
+
+ - Now throws error if item or row does not exist.
+
+setItem
+
+    krakendb.setItem()
+
+ - Now throws error if item or row does not exist.
+
 __If you find any bugs, please report them to https://github.com/KlaussMC/krakendb. If you wish to comment, or if you wish to contribute, feel free. I would happily accept help and feedback.__
