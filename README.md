@@ -98,6 +98,29 @@ To check whether a field is filled:
  - takes 2 arguments, item and row. returns true if item does not equal null, false if otherwise.
  - argument 2 is optional.
 
+A new way of adding information: push:
+    
+    krakendb.push()
+
+ - takes 2 arguments, entry name and array of values for the data. Array length must match the number of rows. throws error if else.
+
+Get item by row index:
+    
+    krakendb.getByIndex()
+
+ - takes 2 arguments, item and row
+ - argument 2 is optional
+
+Set item by row index:
+
+    krakendb.setByIndex()
+
+ - takes 3 arguments, item, row and value
+
+Get number of rows in database:
+
+    krakendb.length()
+
 __Changes:__
 getItem
 
