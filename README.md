@@ -98,6 +98,8 @@ To check whether a field is filled:
  - takes 2 arguments, item and row. returns true if item does not equal null, false if otherwise.
  - argument 2 is optional.
 
+__New in version 1.4.0__
+
 A new way of adding information: push:
     
     krakendb.push()
@@ -133,5 +135,13 @@ setItem
     krakendb.setItem()
 
  - Now throws error if item or row does not exist.
+
+ minor bugfix
+ exportdb
+
+    krakendb.exportdb()
+
+ - Now takes no arguments and is faster.
+ - bugs were fixed.
 
 __If you find any bugs, please report them to https://github.com/KlaussMC/krakendb. If you wish to comment, or if you wish to contribute, feel free. I would happily accept help and feedback.__

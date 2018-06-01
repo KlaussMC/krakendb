@@ -4,10 +4,6 @@ const fs = require("fs"),
       root = path.resolve(__dirname).split('/node_modules')[0],
       functions = {};
 
-// console.log(root)
-
-
-
 class db {
     constructor (name, rows, cont) {
         this.name = name;
@@ -104,16 +100,15 @@ class db {
 	length() {
 		return this.data.length;
 	}
-	push(items) {
-		if (items.length - 1 != this.rows.length) {
-			throw "Number of items provided is does not match number of data fields";
-		} else {
-			var rowName = items.shift()
-			this.entry(rowName)
-			for (var i = 0; i < this.length(); i++) {
-				this.set(rowName, this.rows[i], items[i])
-			}
-		}
+	push(entryName, items) {
+        if (items.length != this.rows.length) {
+            throw "Number of items provided is does not match number of data fields";
+        } else {
+            this.entry(entryName)
+            for (var i = 0; i < this.length(); i++) {
+                this.set(entryName, this.rows[i], items[i])
+            }
+        }
 	}
 }
 var dbs = [];
@@ -145,39 +140,18 @@ functions.getItem = function(item, row) {
 functions.delItem = function(item, row) {
     dbs[activeIndex].del(item, row);
 }
-functions.exportdb = function(db) {
-    if (!db) {
-        if (fs.existsSync(path.join(root, "krakendb/"))) {
-            fs.writeFileSync(path.join(root, "krakendb/" + dbs[activeIndex].name + ".json"), JSON.stringify(dbs[activeIndex]));
-        } else {
-            fs.mkdirSync(path.join(root, "krakendb/"));
-            fs.writeFileSync(path.join(root, "krakendb/" + dbs[activeIndex].name + ".json"), JSON.stringify(dbs[activeIndex]));
-        }
-    } else {
-        let matches = 0;
-        for (let i in dbs) {
-            if (dbs[i].name == db) {
-                if (fs.existsSync(path.join(root, path.join(__dirname, "krakendb")))) {
-                    fs.writeFileSync(path.join(root, "krakendb/" + dbs[i].name + ".json"), JSON.stringify(dbs[i]));
-                } else {
-                    fs.mkdirSync(path.join(root, "krakendb"));
-                    fs.writeFileSync(path.join(root, "krakendb/" + dbs[i].name + ".json"), JSON.stringify(dbs[i]));
-                }
-                matches++;
-                break;
-            }
-        }
-        if (matches == 0) {
-            throw "The selected database does not exist"
-        }
+functions.exportdb = function() {
+    if (!fs.existsSync(path.join(root, 'db'))) {
+        fs.mkdirSync(path.join(root, 'db'))
     }
+    fs.writeFileSync(path.join(root, "db/" + dbs[activeIndex].name + ".json"), JSON.stringify(dbs[activeIndex]))
 }
 functions.loaddb = function(name) {
     if (name) {
-        if (fs.existsSync(path.join(root, "krakendb/" + name + ".json"))) {
+        if (fs.existsSync(path.join(root, "db/" + name + ".json"))) {
             dbs.push(new db(name,
-                            JSON.parse(fs.readFileSync(path.join(root, "krakendb/" + name + ".json"))).rows,
-                            JSON.parse(fs.readFileSync(path.join(root, "krakendb/" + name + ".json"))).data
+                            JSON.parse(fs.readFileSync(path.join(root, "db/" + name + ".json"))).rows,
+                            JSON.parse(fs.readFileSync(path.join(root, "db/" + name + ".json"))).data
             ));
         } else {
             throw "database doesn't exist";
@@ -188,7 +162,7 @@ functions.loaddb = function(name) {
 }
 functions.dbexists = function(name) {
     if (name) {
-        if ( fs.existsSync(path.join(root, "krakendb/" + name + ".json")) ) {
+        if ( fs.existsSync(path.join(root, "db/" + name + ".json")) ) {
             return true;
         } else {
             let matches = 0;
@@ -244,12 +218,13 @@ functions.indb = function (str) {
 functions.length = () => {return dbs[activeIndex].length() }
 functions.getByIndex = index => { return dbs[activeIndex].getIndex(index) }
 functions.setByIndex = (index, row, value) => { dbs[activeIndex].setIndex(index, row, value) }
-functions.push = (args) => { dbs[activeIndex].push(args) }
+functions.push = (entryName, args) => { dbs[activeIndex].push(entryName, args) }
 
-module.exports = (function() { return functions; } )();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             vvv
+module.exports = (function() { return functions; } )();
+// module.exports = functions;
 
 /**
-    new user requirements: call var db = require("krakendb")("testdb")
+    new user requirements: call var db = require("db")("testdb")
 
     db.getItem() lah dih dah dih dah
 */
