@@ -1,3 +1,4 @@
+require('console.table')
 'use strict'
 const fs = require("fs"),
       path = require("path"),
@@ -17,6 +18,10 @@ class db {
             }
         } else {
             throw "The second argument must be an array of strings or an integer.";
+        }
+
+        if (cont) {
+            this.data = cont;
         }
     }
     entry (item) {
@@ -110,6 +115,9 @@ class db {
             }
         }
 	}
+    print() {
+        console.table(this.data);
+    }
 }
 var dbs = [];
 let activeIndex = 0;
@@ -219,6 +227,7 @@ functions.length = () => {return dbs[activeIndex].length() }
 functions.getByIndex = index => { return dbs[activeIndex].getIndex(index) }
 functions.setByIndex = (index, row, value) => { dbs[activeIndex].setIndex(index, row, value) }
 functions.push = (entryName, args) => { dbs[activeIndex].push(entryName, args) }
+functions.print = function() { dbs[activeIndex].print() }
 
 module.exports = (function() { return functions; } )();
 // module.exports = functions;
