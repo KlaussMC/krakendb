@@ -4,7 +4,7 @@ const fs = require("fs"),
       path = require("path");
 let root = path.resolve(__dirname).split('/node_modules')[0],
     functions = {};
-	
+
 class db {
     constructor (name, rows, cont) {
         this.name = name;

@@ -96,7 +96,15 @@ To check whether a field is filled:
     krakendb.isset()
 
  - takes 2 arguments, item and row. returns true if item does not equal null, false if otherwise.
- - argument 2 is optional.
+ - argument 2 is optional
+
+__New in version 1.6.0__
+
+To change export location of databases:
+
+    krakendb.setExportLocation()
+
+ - takes one argument, location. The folder where the database files will be stored at.
 
 __Changes:__
 getItem
