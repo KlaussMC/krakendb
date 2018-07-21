@@ -104,7 +104,8 @@ To change export location of databases:
 
     krakendb.setExportLocation()
 
- - takes one argument, location. The folder where the database files will be stored at.
+ - takes one argument, location. The folder where the database files will be stored at + "/db".
+    example: `krakendb.setExportLocation("C:\\Websites\\Test\\Info")` will store databased at `C:\\Websites\\Test\\Info\\db`
 
 __Changes:__
 getItem
