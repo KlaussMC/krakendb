@@ -1,10 +1,10 @@
 require('console.table')
 'use strict'
 const fs = require("fs"),
-      path = require("path"),
-      root = path.resolve(__dirname).split('/node_modules')[0],
-      functions = {};
-
+      path = require("path");
+let root = path.resolve(__dirname).split('/node_modules')[0],
+    functions = {};
+	
 class db {
     constructor (name, rows, cont) {
         this.name = name;
@@ -228,5 +228,12 @@ functions.getByIndex = index => { return dbs[activeIndex].getIndex(index) }
 functions.setByIndex = (index, row, value) => { dbs[activeIndex].setIndex(index, row, value) }
 functions.push = (entryName, args) => { dbs[activeIndex].push(entryName, args) }
 functions.print = function() { dbs[activeIndex].print() }
+
+functions.setExportLocation = function(location) {
+	if (location && fs.existsSync(location))
+		root = location
+	else
+		throw new Error("The location is invalid");
+}
 
 module.exports = (function() { return functions; } )();
