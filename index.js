@@ -229,7 +229,7 @@ functions.setByIndex = (index, row, value) => { dbs[activeIndex].setIndex(index,
 functions.push = (entryName, args) => { dbs[activeIndex].push(entryName, args) }
 functions.print = function() { dbs[activeIndex].print() }
 
-functions.setExportLocation = function(location) {
+functions.setDefaultLocation = function(location) {
 	if (location && fs.existsSync(location))
 		root = location
 	else
